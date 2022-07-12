@@ -22,10 +22,11 @@ df = pd.DataFrame(pd.read_excel('base_vbp.xlsx'))
 app.layout = html.Div(children=[
     html.Div([
         dcc.Dropdown(df['Município'].value_counts().index, multi=True, id='id_cidade'),
-        dcc.Dropdown(df['Cultura'].value_counts().index, multi=True, id='id_produto')
+        html.Div([dcc.Graph(id='fig_vbp_geral')], className=''),
+
     ], className=''),
 
-    html.Div([dcc.Graph(id='fig_vbp_geral')], className=''),
+    dcc.Dropdown(df['Cultura'].value_counts().index,  id='id_produto'),
     html.Div([dcc.Graph(id='fig_produto')], className=''),
 
 
@@ -43,15 +44,15 @@ app.layout = html.Div(children=[
 def renderizar_graficos(id_cidade, id_produto):
     df_filtro_cidade = df[df['Município'].isin(pd.Series(id_cidade))]
 
+
     graf_linha = df_filtro_cidade.groupby(by=['Município', 'Safra'])['VBP'].apply(np.sum).to_frame().reset_index()
+    fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município', text='VBP', title="VBP Bruto Anual")
 
-    fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município', text='VBP')
+    graf_produto = df_filtro_cidade[df_filtro_cidade['Cultura'].isin(pd.Series(id_produto))]
+    fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município', title=f"{id_produto} Comparação entre Municípios (exeto animais)")
 
-
-    fig_produto = px.bar(df_filtro_cidade, x='Safra', y='Produção')
-
-    fig_vbp_geral.update_layout(template='plotly_dark', height=500, transition={"duration": 400})
-    fig_produto.update_layout(template='plotly_dark', height=250, transition={"duration": 400})
+    fig_vbp_geral.update_layout(template='plotly_dark', height=300, transition={"duration": 400})
+    fig_produto.update_layout(template='plotly_dark', height=300, transition={"duration": 400}, barmode='group')
 
     return fig_vbp_geral, fig_produto
 
