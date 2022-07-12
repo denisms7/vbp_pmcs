@@ -22,37 +22,48 @@ df = pd.DataFrame(pd.read_excel('base_vbp.xlsx'))
 # =========  Layout  =========== #
 app.layout = html.Div(children=[
 html.Div([
-    html.H1('VPB'),
+    html.H1('VBP'),
     html.H2('Comparativo entre Cidades'),
     html.Div([
-        dcc.Dropdown(df['Município'].value_counts().index, className='form-control', placeholder='Selecione a(s) Cidades', multi=True, id='id_cidade'),
-        html.Div([dcc.Graph(id='fig_vbp_geral')], className=''),
-    ], className='col-sm-6 p-2'),
+        html.Div([
+            dcc.Dropdown(df['Município'].value_counts().index.sort_values(ascending=True),'Centenário do Sul', className='form-control', placeholder='Selecione a(s) Cidades', multi=True, id='id_cidade'),
+            html.Div([dcc.Graph(id='fig_vbp_geral')], className=''),
+        ], className='col-md-6 p-1'),
 
+        html.Div([
+            dcc.Dropdown(df['Cultura'].value_counts().index.sort_values(ascending=True),className='form-control', placeholder='Selecione a Cultura',  id='id_produto'),
+            html.Div([dcc.Graph(id='fig_produto')], className=''),
+        ], className='col-md-6 p-1'),
+    ], className='row'),
+
+
+    html.H2('Análise Estadual'),
     html.Div([
-        dcc.Dropdown(df['Cultura'].value_counts().index,className='form-control', placeholder='Selecione a Cultura',  id='id_produto'),
-        html.Div([dcc.Graph(id='fig_produto')], className=''),
-    ], className='col-sm-6 p-2'),
-
-    html.H2('Análise global'),
         html.Div([
             html.Div([dcc.Graph(id='fig_media')], className=''),
-        ], className='col-sm-6 p-2'),
+        ], className='col-md-4 p-1'),
+
             html.Div([
             html.Div([dcc.Graph(id='fig_min_max')], className=''),
-        ], className='col-sm-6 p-2'),
+        ], className='col-md-4 p-1'),
 
 
-    html.H2('Maiores Produtores'),
+        html.Div([
+            html.Div([dcc.Graph(id='fig_total')], className=''),
+        ], className='col-md-4 p-1'),
+    ], className='row'),
 
-], className='row'),
-], className='container-fluid p-5')
+
+
+], className='row p-2'),
+], className='container-fluid')
 # =========  Callback  =========== #
 @app.callback([
         Output('fig_vbp_geral', 'figure'),
         Output('fig_produto', 'figure'),
         Output('fig_media', 'figure'),
         Output('fig_min_max', 'figure'),
+        Output('fig_total', 'figure'),
     ],
     [
         Input('id_cidade', 'value'),
@@ -75,31 +86,38 @@ def renderizar_graficos(id_cidade, id_produto):
     df_maximo = df.groupby(by=['Safra'])['VBP'].max().reset_index()
     df_maximo = df_maximo.rename(columns={'VBP': 'Max'}).set_index('Safra')
 
-    df_statistico = pd.concat([df_media, df_mediana, df_maximo,df_minimo], axis=1).reset_index()
+    df_total = df.groupby(by=['Safra'])['VBP'].sum().reset_index()
+    df_total = df_total.rename(columns={'VBP': 'Total'}).set_index('Safra')
+
+    df_statistico = pd.concat([df_media, df_mediana, df_maximo,df_minimo, df_total], axis=1).reset_index()
 
 
 
     graf_linha = df_filtro_cidade.groupby(by=['Município', 'Safra'])['VBP'].apply(np.sum).to_frame().reset_index()
-    fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município', text='VBP', title="VBP Bruto Anual")
+    fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município', text='VBP')
 
     graf_produto = df_filtro_cidade[df_filtro_cidade['Cultura'].isin(pd.Series(id_produto))]
-    fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município', title=f"{id_produto} Comparação entre Municípios (exeto animais)")
+    fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município')
 
     fig_media = go.Figure()
-    fig_media.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Media'], name='Media'))
-    fig_media.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Mediana'], name='Mediana'))
+    fig_media.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Media'],text='Media', name='Media'))
+    fig_media.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Mediana'],text='Mediana', name='Mediana'))
 
     fig_min_max = go.Figure()
-    fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Min'], name='Minima'))
-    fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Max'], name='Maximo'))
+    fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Min'],text='Min', name='Minima'))
+    fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Max'],text='Max', name='Maximo'))
+
+    fig_total = px.bar(df_statistico, x='Safra', y='Total')
 
 
-    fig_vbp_geral.update_layout(template='plotly_dark', transition={"duration": 400})
-    fig_produto.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group')
-    fig_media.update_layout(template='plotly_dark', transition={"duration": 400}, title='Media e Mediana VBP por Safra')
-    fig_min_max.update_layout(template='plotly_dark', transition={"duration": 400}, title='Minimo e Maxima VBP por Safra')
 
-    return fig_vbp_geral, fig_produto, fig_media, fig_min_max
+    fig_vbp_geral.update_layout(template='plotly_dark', transition={"duration": 400}, title="VBP Bruto Anual")
+    fig_produto.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"{id_produto} Comparação entre Municípios (exeto animais)")
+    fig_media.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='Media e Mediana - VBP por Safra')
+    fig_min_max.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='Minimo e Maxima - VBP por Safra')
+    fig_total.update_layout(template='plotly_dark',height=300 , transition={"duration": 400}, title="Total - VBP por Safra")
+
+    return fig_vbp_geral, fig_produto, fig_media, fig_min_max, fig_total
 
 if __name__ == "__main__":
     app.run_server(host='0.0.0.0', port=80, debug=True)
