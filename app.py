@@ -51,8 +51,8 @@ def renderizar_graficos(id_cidade, id_produto):
     graf_produto = df_filtro_cidade[df_filtro_cidade['Cultura'].isin(pd.Series(id_produto))]
     fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município', title=f"{id_produto} Comparação entre Municípios (exeto animais)")
 
-    fig_vbp_geral.update_layout(template='plotly_dark', height=300, transition={"duration": 400})
-    fig_produto.update_layout(template='plotly_dark', height=300, transition={"duration": 400}, barmode='group')
+    fig_vbp_geral.update_layout(template='plotly_dark', height=400, transition={"duration": 400})
+    fig_produto.update_layout(template='plotly_dark', height=400, transition={"duration": 400}, barmode='group')
 
     return fig_vbp_geral, fig_produto
 
