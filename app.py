@@ -24,7 +24,6 @@ df['Área (ha)'] = df['Área (ha)'].apply(lambda x: str(x).replace(' ','')).appl
 # =========  Layout  =========== #
 app.layout = html.Div(children=[
 html.Div([
-    html.H1('VBP'),
     html.H2('Comparativo entre Cidades'),
     html.Div([
         html.Div([
@@ -108,10 +107,10 @@ def renderizar_graficos(id_cidade, id_produto):
     fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município')
 
     graf_produto = df_filtro_cidade[df_filtro_cidade['Cultura'].isin(pd.Series(id_produto))]
-    fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município')
+    fig_produto = px.bar(graf_produto, x='Safra', y='Produção', color='Município', text='Produção')
 
     # graf_area = df_filtro_cidade[df_filtro_cidade['Cultura'].isin(pd.Series(id_produto))]
-    fig_area = px.bar(graf_produto, x='Safra', y='Área (ha)', color='Município')
+    fig_area = px.bar(graf_produto, x='Safra', y='Área (ha)', color='Município', text='Área (ha)')
 
     fig_media = go.Figure()
     fig_media.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Media'],text='Media', name='Media'))
@@ -121,16 +120,16 @@ def renderizar_graficos(id_cidade, id_produto):
     fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Min'],text='Min', name='Minima'))
     fig_min_max.add_trace(go.Scatter(x=df_statistico['Safra'], y=df_statistico['Max'],text='Max', name='Maximo'))
 
-    fig_total = px.bar(df_statistico, x='Safra', y='Total')
+    fig_total = px.bar(df_statistico, x='Safra', y='Total', text='Total')
 
 
 
     fig_vbp_geral.update_layout(template='plotly_dark', transition={"duration": 400}, title="VBP Bruto Anual")
-    fig_produto.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"{id_produto} Comparação entre Municípios (exeto animais)")
-    fig_area.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title="Comparação por Area")
-    fig_media.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='Media e Mediana - VBP por Safra')
-    fig_min_max.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='Minimo e Maxima - VBP por Safra')
-    fig_total.update_layout(template='plotly_dark',height=300 , transition={"duration": 400}, title="Total - VBP por Safra")
+    fig_produto.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"PRODUÇÃO {id_produto} (exeto animais)")
+    fig_area.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title="COMPARAÇÃO POR AREA")
+    fig_media.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='MEDIA E MEDIANA - VBP')
+    fig_min_max.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title='MAXIMA E MINIMO - VBP')
+    fig_total.update_layout(template='plotly_dark',height=300 , transition={"duration": 400}, title="TOTAL POR SAFRA - VBP")
 
     return fig_vbp_geral, fig_produto, fig_media, fig_min_max, fig_total, fig_area
 
