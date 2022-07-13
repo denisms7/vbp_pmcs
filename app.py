@@ -18,7 +18,7 @@ server = app.server
 pd.set_option('float_format','{:.3f}'.format)
 
 df = pd.DataFrame(pd.read_excel('base_vbp.xlsx'))
-df['Área (ha)'] = df['Área (ha)'].apply(lambda x: str(x).replace(' ',''))
+df['Área (ha)'] = df['Área (ha)'].apply(lambda x: str(x).replace(' ','')).apply(lambda x: str(x).replace(',','.')).astype('float64')
 
 
 # =========  Layout  =========== #
@@ -38,6 +38,10 @@ html.Div([
         ], className='col-md-6 p-1'),
 
         html.Div([
+
+        ], className='col-md-6 p-1'),
+
+        html.Div([
             html.Div([dcc.Graph(id='fig_area')], className=''),
         ], className='col-md-6 p-1'),
 
@@ -50,13 +54,14 @@ html.Div([
             html.Div([dcc.Graph(id='fig_media')], className=''),
         ], className='col-md-4 p-1'),
 
+        html.Div([
+            html.Div([dcc.Graph(id='fig_total')], className=''),
+        ], className='col-md-4 p-1'),
+
             html.Div([
             html.Div([dcc.Graph(id='fig_min_max')], className=''),
         ], className='col-md-4 p-1'),
 
-        html.Div([
-            html.Div([dcc.Graph(id='fig_total')], className=''),
-        ], className='col-md-4 p-1'),
     ], className='row'),
 
 
