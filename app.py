@@ -23,6 +23,7 @@ df['Área (ha)'] = df['Área (ha)'].apply(lambda x: str(x).replace(' ','').repla
 
 # =========  Layout  =========== #
 app.layout = html.Div(children=[
+html.Title('VBP Municipal'),
 html.Div([
     html.H2('Comparativo entre Cidades'),
     html.Div([
@@ -30,7 +31,9 @@ html.Div([
             dcc.Dropdown(df['Município'].value_counts().index.sort_values(ascending=True),'Centenário do Sul', className='form-control', placeholder='Selecione a(s) Cidades', multi=True, id='id_cidade'),
         ], className='col-md-6 p-1'),
         html.Div([
-            dcc.RadioItems(['Área (ha)','Rebanho Estático','Peso','Produção'],  id='check_rank', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),
+            dcc.RadioItems(['Área (ha)',
+       'Rebanho Estático', 'Abate / Comercialização', 'Peso', 'Produção',
+       'VBP'],'Área (ha)',  id='check_rank', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),
         ], className='col-md-6 p-1'),
 
     ], className='row'),
@@ -136,28 +139,19 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
 
     df_statistico = pd.concat([df_media, df_mediana, df_maximo,df_minimo, df_total], axis=1).reset_index()
 
-    fig_rank = go.Figure()
-    if check_rank == 'Peso':
-        v_lista = []
-        for x in df['Safra'].unique().tolist():
-            df_rank = df_filtro_cidade.groupby(by=['Safra','Cultura'])['Peso'].sum().reset_index()
-            df_rank = df_rank.sort_values(by=['Peso'], axis=0,ascending=False).head(5)
-            v_lista.append(df_rank)
 
-        df_rank1 = pd.concat(v_lista)
-        fig_rank = px.bar(df_rank1, x='Safra', y='Peso', color='Município', text='Cultura', barmode='group')
-        fig_rank.update_layout(template='plotly_dark', transition={"duration": 400})
 
-    elif check_rank == 'Área (ha)':
-        v_lista = []
-        for x in df['Safra'].unique().tolist():
-            df_rank = df_filtro_cidade.groupby(by=['Safra','Município'])['Área (ha)'].sum().reset_index()
-            df_rank = df_rank.sort_values(by=['Área (ha)'], axis=0,ascending=False).head(5)
-            v_lista.append(df_rank)
+    v_lista = []
+    for x in df_filtro_cidade['Município'].unique().tolist():
+        for n in df['Safra'].unique().tolist():
+            df_filtrado = df[(df['Município'] ==  x) & (df['Safra'] ==  n)].groupby(by=['Município','Safra','Cultura'])[check_rank].sum().reset_index().sort_values(by=[check_rank], axis=0, ascending=False).head(5)
+            v_lista.append(df_filtrado)
+    df_rank5 = pd.concat(v_lista)
 
-        df_rank1 = pd.concat(v_lista)
-        fig_rank = px.bar(df_rank1, x='Safra', y='Área (ha)', color='Cultura', text='Cultura', barmode='group')
-        fig_rank.update_layout(template='plotly_dark', transition={"duration": 400})
+    fig_rank = px.scatter(df_rank5, x='Safra', y=check_rank, size=check_rank , color='Município', hover_data=['Cultura', check_rank])
+    fig_rank.update_layout(template='plotly_dark', transition={"duration": 400}, title=f"RANK 5 {check_rank.upper()}")
+
+
 
     graf_linha = df_filtro_cidade.groupby(by=['Município', 'Safra'])['VBP'].apply(np.sum).to_frame().reset_index()
     fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município')
