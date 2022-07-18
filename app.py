@@ -23,8 +23,23 @@ df['Safra'] = df['Safra'].apply(lambda x: str(x).replace('/','-')).fillna(0)
 
 # =========  Layout  =========== #
 app.layout = html.Div(children=[
+
+    html.Div([ # linha 0
+        html.Div([
+            html.Img(src='https://www.centenariodosul.pr.gov.br/images/brasao.png', alt='Brasão', className='img-fluid'),
+        ], className='col-sm-1'),
+        html.Div([
+            html.H3(['MUNICÍPIO DE CENTENÁRIO DO SUL – PARANÁ'], className='m-0'),
+            html.Hr([], className='m-0'),
+            html.P(['Paço Municipal Praça Padre Aurélio Basso, 378 – Centro - Estado do Paraná'], className='m-0'),
+            html.P(['www.centenariodosul.pr.gov.br | CNPJ: 75.845.503/0001-67'], className='m-0'),
+            html.P(['Fone: (43) 3675-8000 | CEP: 86.630-000 | E-mail: contato@centenariodosul.pr.gov.br'], className='m-0 mb-5'),
+
+        ], className='col-md-11'),
+    ], className='row  pt-5 ps-1'), # fim linha 0
+
     html.Div([ # linha 1
-        html.H2('Comparativo entre Cidades'),
+        html.H3('Comparativo entre Cidades'),
         html.Div([
             dcc.Dropdown(df['Município'].value_counts().index.sort_values(ascending=True),'Centenário do Sul', className='form-control', placeholder='Selecione a(s) Cidades', multi=True, id='id_cidade'),
         ], className='col-md-6 p-1'),
@@ -41,7 +56,7 @@ app.layout = html.Div(children=[
     ], className='row'), # fim linha 2
 
     html.Div([ # linha 3
-        html.H2('Comparativo de Cultura'),
+        html.H3('Comparativo de Cultura'),
         html.Div([
             dcc.Dropdown(df['Cultura'].value_counts().index.sort_values(ascending=True),className='form-control', placeholder='Selecione a Cultura',  id='id_produto'),
         ], className='col-md-6 p-1'),
@@ -66,7 +81,7 @@ app.layout = html.Div(children=[
     ], className='row'),
 
     html.Div([ # linha 6
-        html.H2('Dados Estaduais'),
+        html.H3('Dados Estaduais'),
         html.Div([dcc.RadioItems(['Media', 'Mediana'],'Media' ,  id='check_media', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),], className='col-md-4 p-1'),
         html.Div([], className='col-md-4 p-1'),
         html.Div([dcc.RadioItems(['Minimo', 'Maximo'],'Minimo',  id='check_min_max', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),], className='col-md-4 p-1'),
@@ -79,10 +94,11 @@ app.layout = html.Div(children=[
     ], className='row'), # fim da linha 7
 
     html.Div([ # linha 6
+        html.Hr(),
         html.Div([html.P(['Desenvolvido por Denis muniz Silva'],className="text-center"),], className='col-md-12 p-1'),
-    ], className='row'),
+    ], className='row pt-5'),
 
-], className='container-fluid')
+], className='container-fluid', title='VBP')
 
 # =========  Callback  =========== #
 @app.callback([
