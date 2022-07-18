@@ -41,6 +41,7 @@ app.layout = html.Div(children=[
     ], className='row'), # fim linha 2
 
     html.Div([ # linha 3
+        html.H2('Comparativo de Cultura'),
         html.Div([
             dcc.Dropdown(df['Cultura'].value_counts().index.sort_values(ascending=True),className='form-control', placeholder='Selecione a Cultura',  id='id_produto'),
         ], className='col-md-6 p-1'),
@@ -65,6 +66,7 @@ app.layout = html.Div(children=[
     ], className='row'),
 
     html.Div([ # linha 6
+        html.H2('Dados Estaduais'),
         html.Div([dcc.RadioItems(['Media', 'Mediana'],'Media' ,  id='check_media', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),], className='col-md-4 p-1'),
         html.Div([], className='col-md-4 p-1'),
         html.Div([dcc.RadioItems(['Minimo', 'Maximo'],'Minimo',  id='check_min_max', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),], className='col-md-4 p-1'),
@@ -77,7 +79,7 @@ app.layout = html.Div(children=[
     ], className='row'), # fim da linha 7
 
     html.Div([ # linha 6
-        html.Div([html.P(['Desenvolvido por Denis muniz Silva']),], className='col-md-12 p-1'),
+        html.Div([html.P(['Desenvolvido por Denis muniz Silva'],className="text-center"),], className='col-md-12 p-1'),
     ], className='row'),
 
 ], className='container-fluid')
@@ -161,7 +163,7 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
 
 
     fig_vbp_geral.update_layout(template='plotly_dark', transition={"duration": 400}, title="VBP Bruto Anual")
-    fig_rank.update_layout(template='plotly_dark', transition={"duration": 400}, title=f"RANK 5 {check_rank.upper()}")
+    fig_rank.update_layout(template='plotly_dark', transition={"duration": 400}, title=f"TOP 5 {check_rank.upper()}")
 
     fig_an_0.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"COMPARAÇÃO {check_producao_0.upper()}")
     fig_an_1.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"COMPARAÇÃO {check_producao_1.upper()}")
