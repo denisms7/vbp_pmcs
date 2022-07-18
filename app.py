@@ -184,7 +184,7 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
     fig_an_0.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"COMPARAÇÃO {check_producao_0.upper()}")
     fig_an_1.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"COMPARAÇÃO {check_producao_1.upper()}")
 
-    fig_total.update_layout(template='plotly_dark',height=300 , transition={"duration": 400}, title="TOTAL POR SAFRA - VBP R$")
+    fig_total.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title="TOTAL POR SAFRA - VBP R$")
 
 
     return fig_vbp_geral, fig_rank, fig_an_0, fig_an_1, fig_media, fig_min_max, fig_total
