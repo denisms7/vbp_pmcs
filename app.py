@@ -9,9 +9,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-
-
-
 app = dash.Dash(__name__)
 server = app.server
 
@@ -78,7 +75,7 @@ app.layout = html.Div(children=[
     html.Div([ # linha 5
         html.Div([html.Div([dcc.Graph(id='fig_an_1')], className=''),], className='col-md-6 p-1'),
         html.Div([html.Div([dcc.Graph(id='fig_an_0')], className=''),], className='col-md-6 p-1'),
-    ], className='row'),
+    ], className='row'), # fim da linha 5
 
     html.Div([ # linha 6
         html.H3('Dados Estaduais'),
@@ -93,10 +90,10 @@ app.layout = html.Div(children=[
         html.Div([html.Div([dcc.Graph(id='fig_total')], className=''),], className='col-md-4 p-1'),
     ], className='row'), # fim da linha 7
 
-    html.Div([ # linha 6
+    html.Div([ # linha 8
         html.Hr(),
         html.Div([html.P(['Desenvolvido por Denis muniz Silva'],className="text-center"),], className='col-md-12 p-1'),
-    ], className='row pt-5'),
+    ], className='row pt-5'), # fim da linha 8
 
 ], className='container-fluid', title='VBP')
 
@@ -149,7 +146,6 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
     df_rank5 = pd.concat(v_lista)
 
     fig_rank = px.scatter(df_rank5, x='Safra', y=check_rank, size=check_rank , color='Município', hover_data=['Cultura', check_rank])
-
 
     graf_linha = df_filtro_cidade.groupby(by=['Município', 'Safra'])['VBP'].apply(np.sum).to_frame().reset_index()
     fig_vbp_geral = px.line(graf_linha, x='Safra', y='VBP', color='Município')
