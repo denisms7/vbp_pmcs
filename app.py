@@ -19,7 +19,7 @@ pd.set_option('float_format','{:.3f}'.format)
 
 df = pd.DataFrame(pd.read_excel('base_vbp.xlsx'))
 df['Área (ha)'] = df['Área (ha)'].apply(lambda x: str(x).replace(' ','').replace(',','.')).fillna(0).astype(float)
-
+df['Safra'] = df['Safra'].apply(lambda x: str(x).replace('/','-')).fillna(0)
 
 # =========  Layout  =========== #
 app.layout = html.Div(children=[
@@ -56,7 +56,7 @@ app.layout = html.Div(children=[
         ], className='col-md-6 p-1'),
         html.Div([dcc.RadioItems(['Área (ha)',
            'Rebanho Estático', 'Abate / Comercialização', 'Peso', 'Produção',
-           'VBP'],'Área (ha)',  id='check_producao_1', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),
+           'VBP'],'VBP',  id='check_producao_1', className='m-1', inputStyle={'margin-right': '5px', 'margin-left': '5px'}),
         ], className='col-md-6 p-1'),
     ], className='row'), # fim linha 4
 
