@@ -23,6 +23,7 @@ app.layout = html.Div(children=[
 
     html.Div([ # linha 0
         html.Div([
+            # 'https://www.centenariodosul.pr.gov.br/images/brasao.png'
             html.Img(src='https://www.centenariodosul.pr.gov.br/images/brasao.png', alt='Brasão', className='img-fluid'),
         ], className='col-sm-1'),
         html.Div([
