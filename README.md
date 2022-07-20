@@ -1,9 +1,9 @@
 # VBP
 ## 🚀 Aplicação de Análise de Dados
 
-Dashboard web interativo para análise do VBP municipal, desenvolvido a pedido da Controladoria do município de Centenário do Sul-PR.
-Base de dados disponibilizada pela Secretaria de Agricultura e Abastecimento.
-Dashboard web interativo de análise para dispositivos moveis e computadores.
+* Dashboard web interativo para análise do VBP municipal, desenvolvido a pedido da Controladoria do município de Centenário do Sul-PR.
+* Base de dados disponibilizada pela Secretaria de Agricultura e Abastecimento.
+* Dashboard web interativo de análise para dispositivos moveis e computadores.
 
 ![vendas](https://user-images.githubusercontent.com/82631808/178117148-46acf8ec-dd49-47f0-8a6c-9a8a4a20afb4.png)
 
