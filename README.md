@@ -5,7 +5,7 @@ Dashboard web interativo para análise do VBP municipal, desenvolvido a pedido d
 Base de dados disponibilizada pela Secretaria de Agricultura e Abastecimento.<br>
 Dashboard web interativo de análise para dispositivos moveis e computadores.
 
-![vendas](https://user-images.githubusercontent.com/82631808/178117148-46acf8ec-dd49-47f0-8a6c-9a8a4a20afb4.png)
+![vbp](https://user-images.githubusercontent.com/82631808/180009450-61198359-1c1e-47a4-a460-aeef4c9b3054.png)
 
 
 ## 📦 Configuração
