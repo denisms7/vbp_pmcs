@@ -96,7 +96,7 @@ app.layout = html.Div(children=[
         html.Div([html.P(['Desenvolvido por Denis muniz Silva'],className="text-center"),], className='col-md-12 p-1'),
     ], className='row pt-5'), # fim da linha 8
 
-], className='container-fluid', title='VBP')
+], className='container-fluid')
 
 # =========  Callback  =========== #
 @app.callback([
