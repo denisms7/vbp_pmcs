@@ -187,4 +187,4 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
     return fig_vbp_geral, fig_rank, fig_an_0, fig_an_1, fig_media, fig_min_max, fig_total
 
 if __name__ == "__main__":
-    app.run_server(host='0.0.0.0', port=80, debug=False)
+    app.run_server(debug=False)
