@@ -1,6 +1,6 @@
 {
   "version": 2,
   "builds": [
-    { "src": "app.py", "use": "@vercel/python" }
+    { "src": "app.py", "use": "@vercel/python", "includeFiles": ["app.py", "base_vbp.xlsx"] }
   ]
 }
