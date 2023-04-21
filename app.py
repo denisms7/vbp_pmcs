@@ -23,17 +23,13 @@ app.layout = html.Div(children=[
 
     html.Div([ # linha 0
         html.Div([
-            # 'https://www.centenariodosul.pr.gov.br/images/brasao.png'
-            html.Img(src='https://www.centenariodosul.pr.gov.br/images/brasao.png', alt='Brasão', className='img-thumbnail'),
-        ], className='col-sm-1'),
-        html.Div([
             html.H3(['MUNICÍPIO DE CENTENÁRIO DO SUL – PARANÁ'], className='m-0'),
             html.Hr([], className='m-0'),
             html.P(['Paço Municipal Praça Padre Aurélio Basso, 378 – Centro - Estado do Paraná'], className='m-0'),
             html.P(['www.centenariodosul.pr.gov.br | CNPJ: 75.845.503/0001-67'], className='m-0'),
             html.P(['Fone: (43) 3675-8000 | CEP: 86.630-000 | E-mail: contato@centenariodosul.pr.gov.br'], className='m-0 mb-5'),
 
-        ], className='col-md-11'),
+        ], className='col-md-12'),
     ], className='row  pt-5 ps-1'), # fim linha 0
 
     html.Div([ # linha 1
@@ -182,7 +178,6 @@ def renderizar_graficos(id_cidade, id_produto, check_media, check_min_max, check
     fig_an_1.update_layout(template='plotly_dark', transition={"duration": 400}, barmode='group', title=f"COMPARAÇÃO {check_producao_1.upper()}")
 
     fig_total.update_layout(template='plotly_dark',height=300, transition={"duration": 400}, title="TOTAL POR SAFRA - VBP R$")
-
 
     return fig_vbp_geral, fig_rank, fig_an_0, fig_an_1, fig_media, fig_min_max, fig_total
 
