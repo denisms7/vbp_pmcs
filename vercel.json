@@ -1,16 +1,6 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "app.py",
-      "use": "@desh/cli"
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/app.py" }
-  ],
-  "env": {
-    "BASE_VBP_FILE": "base_vbp.xlsx"
-  }
+    { "src": "app.py", "use": "@vercel/python" }
+  ]
 }
